@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DialyCare</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#f1f6f7;color:#203b46}
+header{background:#123e4b;color:white;padding:22px}
+header h1{margin:0;color:#76d4c3}
+header p{margin-bottom:0}
+nav{background:#fff;padding:12px;display:flex;gap:8px;flex-wrap:wrap}
+nav button{background:#e5f3f0;border:0;padding:11px;border-radius:8px;color:#164b55}
+main{padding:20px;max-width:1000px;margin:auto}
+h2{color:#168b88}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.card,.panel{background:white;padding:18px;border-radius:12px;margin-bottom:15px;box-shadow:0 2px 8px #0000000c}
+.card strong{font-size:27px;color:#168b88;display:block;margin-top:12px}
+table{width:100%;border-collapse:collapse;background:white}
+th,td{text-align:left;padding:12px;border-bottom:1px solid #e4eded;font-size:13px}
+th{color:#168b88}
+.page{display:none}
+.page.active{display:block}
+input,textarea,select{padding:11px;border:1px solid #ccdada;border-radius:7px;width:100%;margin:6px 0 12px}
+.action{background:#168b88;color:white;border:0;border-radius:7px;padding:11px 16px}
+.notice{background:#fff3d9;padding:12px;border-radius:8px;font-size:13px}
+footer{text-align:center;color:#71858a;padding:25px;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>DialyCare</h1>
+<p>Gestion des dossiers médicaux des patients hémodialysés</p>
+</header>
+<nav>
+<button onclick="show('home')">Accueil</button>
+<button onclick="show('patients')">Patients</button>
+<button onclick="show('sessions')">Séances</button>
+<button onclick="show('analyses')">Analyses</button>
+<button onclick="show('soins')">Soins infirmiers</button>
+</nav>
+<main>
+<div class="notice">Prototype universitaire : données entièrement fictives. Ne pas utiliser pour des patients réels.</div>
+
+<section id="home" class="page active">
+<h2>Tableau de bord</h2>
+<div class="cards">
+<div class="card">Patients suivis<strong>128</strong></div>
+<div class="card">Séances aujourd'hui<strong>24</strong></div>
+<div class="card">Analyses en attente<strong>06</strong></div>
+</div>
+<div class="panel">
+<h3>Bienvenue sur DialyCare</h3>
+<p>Une plateforme de gestion et de suivi des dossiers médicaux des patients sous hémodialyse.</p>
+</div>
+</section>
+
+<section id="patients" class="page">
+<h2>Dossiers des patients</h2>
+<div class="panel">
+<input id="nom" placeholder="Nom du patient fictif">
+<input id="identifiant" placeholder="Identifiant">
+<button class="action" onclick="ajouter()">Ajouter</button>
+</div>
+<div class="panel">
+<table>
+<thead><tr><th>Patient</th><th>Identifiant</th><th>Statut</th></tr></thead>
+<tbody id="liste">
+<tr><td>Amine B.</td><td>DC-001</td><td>Stable</td></tr>
+<tr><td>Sara M.</td><td>DC-002</td><td>À surveiller</td></tr>
+<tr><td>Yacine K.</td><td>DC-003</td><td>Stable</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="sessions" class="page">
+<h2>Séances d'hémodialyse</h2>
+<div class="panel">
+<table>
+<tr><th>Patient</th><th>Date</th><th>Durée</th><th>État</th></tr>
+<tr><td>Amine B.</td><td>08/11/2026</td><td>4 heures</td><td>Terminée</td></tr>
+<tr><td>Sara M.</td><td>08/11/2026</td><td>4 heures</td><td>En cours</td></tr>
+<tr><td>Yacine K.</td><td>09/11/2026</td><td>4 heures</td><td>Planifiée</td></tr>
+</table>
+</div>
+</section>
+
+<section id="analyses" class="page">
+<h2>Analyses biologiques</h2>
+<div class="panel">
+<table>
+<tr><th>Patient</th><th>Analyse</th><th>Résultat fictif</th></tr>
+<tr><td>Amine B.</td><td>Hémoglobine</td><td>10,8 g/dL</td></tr>
+<tr><td>Sara M.</td><td>Potassium</td><td>4,6 mmol/L</td></tr>
+<tr><td>Yacine K.</td><td>Urée</td><td>1,25 g/L</td></tr>
+</table>
+</div>
+</section>
+
+<section id="soins" class="page">
+<h2>Dossier infirmier</h2>
+<div class="panel">
+<label>Patient</label>
+<select><option>Amine B.</option><option>Sara M.</option><option>Yacine K.</option></select>
+<label>Observations infirmières</label>
+<textarea placeholder="Saisir les observations fictives..."></textarea>
+<button class="action" onclick="alert('Démo : la note ne sera pas sauvegardée.')">Enregistrer (démo)</button>
+</div>
+</section>
+</main>
+<footer>DialyCare © 2026 — Projet universitaire</footer>
+<script>
+function show(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
+function ajouter(){
+let n=document.getElementById('nom').value.trim();
+let i=document.getElementById('identifiant').value.trim();
+if(!n||!i){alert('Remplissez les deux champs');return}
+let tr=document.createElement('tr');
+[n,i,'Nouveau'].forEach(v=>{let td=document.createElement('td');td.textContent=v;tr.appendChild(td)});
+document.getElementById('liste').appendChild(tr);
+document.getElementById('nom').value='';
+document.getElementById('identifiant').value='';
+}
+</script>
+</body>
+</html>
